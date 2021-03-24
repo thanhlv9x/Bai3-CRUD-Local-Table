@@ -1,0 +1,47 @@
+<div mat-dialog-content [formGroup]="formGroup">
+    <p>Cập nhật nhân viên</p>
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Tên nhân viên</mat-label>
+            <input matInput placeholder="Tên nhân viên" [(ngModel)]="data.name" formControlName="name">
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Mã nhân viên</mat-label>
+            <input matInput placeholder="Mã nhân viên" [(ngModel)]="data.code" formControlName="code">
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Địa chỉ</mat-label>
+            <input matInput placeholder="Địa chỉ" [(ngModel)]="data.address" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Ngày sinh</mat-label>
+            <input matInput [matDatepicker]="picker1" [(ngModel)]="data.birth" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Email" [(ngModel)]="data.email" formControlName="email">
+        </mat-form-field>
+    </div>
+    <div>
+        <label>Hình ảnh</label>
+        <input placeholder="Hình ảnh" type="file" (change)="onUpload($event)">
+    </div>
+    <div>
+        <img [src]="data.image" alt="Image Upload" id="imageUpload" [hidden]="!data.image">
+        <button mat-button (click)="onClear()" [hidden]="!data.image">Xóa</button>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onConfirm()" cdkFocusInitial>Xác nhận</button>
+    <button mat-button (click)="onCancel()">Hủy bỏ</button>
+</div>
