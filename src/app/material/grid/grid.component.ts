@@ -41,6 +41,8 @@ export class GridComponent {
     onAdd(): void {
         const dialogRef = this.dialog.open(AddDialogComponent, {
             width: "500px",
+            height: "700px",
+            maxHeight: "700px",
             data: new Employee()
         });
 
@@ -53,6 +55,8 @@ export class GridComponent {
         console.log(data);
         const dialogRef = this.dialog.open(EditDialogComponent, {
             width: "500px",
+            height: "700px",
+            maxHeight: "700px",
             data: data
         });
 

@@ -23,7 +23,7 @@ export class RemoveDialogComponent {
     onConfirm(): void {
         var result = this.dataService.delete(this.data.id ?? -1);
         this.dialog.open(AlertComponent, {
-            data: { result: result, method: "Xóa" }
+            data: { message: "Xóa " + (result ? "thành công" : "không thành công") }
         });
         if (result) {
             this.dialogRef.close();

@@ -1,41 +1,34 @@
+import { ReturnStatement } from "@angular/compiler";
 import { FormControl } from "@angular/forms";
 
 export const isValidDate = (c: FormControl) => {
     const REGEX = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-    return REGEX.test(c.value?.toLocaleDateString()) || c.value === '' ? null : {
-        validateEmail: {
-            valid: false
-        }
-    };
+    return !REGEX.test(c.value?.toLocaleDateString()) || c.value === '' ? {
+        isValidDate: true
+    } : null;
 }
 
 export const isValidName = (c: FormControl) => {
     const REGEX = /[^A-Za-z0-9 ]/;
     let normalStr = removeAscent(c.value);
-    return !REGEX.test(normalStr) || c.value === '' ? null : {
-        validateEmail: {
-            valid: false
-        }
-    };
+    return REGEX.test(normalStr) || c.value === '' ? {
+        isValidName: true
+    } : null;
 }
 
 export const isValidCode = (c: FormControl) => {
     const REGEX = /[^A-Za-z0-9]/;
     let normalStr = removeAscent(c.value);
-    return !REGEX.test(normalStr) || c.value === '' ? null : {
-        validateEmail: {
-            valid: false
-        }
-    };
+    return REGEX.test(normalStr) || c.value === '' ? {
+        isValidCode: true
+    } : null;
 }
 
 export const isValidEmail = (c: FormControl) => {
     const REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return REGEX.test(c.value) || c.value === '' ? null : {
-        validateEmail: {
-            valid: false
-        }
-    };
+    return !REGEX.test(c.value) || c.value === '' ? {
+        isValidEmail: true
+    } : null;
 }
 
 function removeAscent(str: string) {

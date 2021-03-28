@@ -14,9 +14,12 @@ import { isValidDate, isValidName, isValidCode, isValidEmail } from 'src/app/mod
 export class EditDialogComponent {
     formBuilder = new FormBuilder();
     formGroup: FormGroup;
+    firstError?: string;
+    data: Employee = new Employee();
     constructor(public dialogRef: MatDialogRef<EditDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: Employee,
+        @Inject(MAT_DIALOG_DATA) public dataEdit: Employee,
         public dataService: EmployeeService, public dialog: MatDialog) {
+        this.data = { ...dataEdit };
         this.formGroup = this.formBuilder.group({
             'name': new FormControl(this.data.name, [Validators.required, isValidName]),
             'code': new FormControl(this.data.code, [Validators.required, isValidCode]),
@@ -30,6 +33,12 @@ export class EditDialogComponent {
     }
 
     onConfirm(): void {
+        if (!this.onValidate()) {
+            return;
+        }
+        if (!this.data.image) {
+            return;
+        }
         if (this.formGroup.status !== "INVALID") {
             let imgTag: any = document.getElementById('imageUpload');
             this.data.image = imgTag.src;
@@ -48,26 +57,41 @@ export class EditDialogComponent {
     }
 
     onUpload(event: any): void {
-        let imgTag = document.getElementById('imageUpload');
-        this.readURL(event.target, imgTag, this.data);
+        this.readURL(event.target, this.data);
     }
 
     onClear(): void {
+        let inputImage: any = document.getElementById('inputImage');
         let imgTag: any = document.getElementById('imageUpload');
+        inputImage.value = null;
         imgTag.src = "";
         this.data.image = "";
     }
 
-    readURL(input: any, target: any, data: any) {
+    onValidate(): boolean {
+        const props = Object.keys(this.formGroup.value);
+        this.firstError = "";
+        props.forEach((prop) => {
+            if (!this.firstError && this.formGroup.get(prop)?.errors) {
+                this.firstError = prop;
+            }
+        })
+        return !this.firstError;
+    }
+
+    readURL(input: any, data: any) {
         if (input.files && input.files[0] && input.files[0].type.includes('image/')) {
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                target.src = e.target?.result;
                 data.image = e.target?.result;
+                let imgTag: any = document.getElementById('imageUpload');
+                imgTag.src = e.target?.result;
             }
 
             reader.readAsDataURL(input.files[0]);
+        } else {            
+            this.onClear();
         }
     }
 }
